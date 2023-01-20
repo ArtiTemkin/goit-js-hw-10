@@ -12,7 +12,7 @@ const countryInfo = document.querySelector('.country-info');
 
 let fetchCountryDebounced = debounce(a, DEBOUNCE_DELAY);
 
-contryList.addEventListener('click', selectCountry);
+// contryList.addEventListener('click', selectCountry);
 
 inputCountryName.addEventListener('input', fetchCountryDebounced);
 
@@ -27,6 +27,7 @@ function a(event) {
         );
       } else if (countries.length === 1) {
         generateCountryCard(countries[0]);
+        event.target.value = '';
       } else if (countries.length > 1) {
         dataArrayOfCountries = [];
         countryInfo.innerHTML = '';
@@ -57,18 +58,26 @@ function generateListItem(name, flagUrl) {
         <h3 class="country-name">${name}</h3>
       </li>`;
 }
+// function fetchCountryById(countryId) {
+//   return fetch('https://restcountries.com/v2/name/' + countryId).then(
+//     response => {
+//       return response.json();
+//     }
+//   );
+// }
 
-function selectCountry(event) {
-  console.log(event.target);
-  let selectedCountry = event.target;
-  if (selectedCountry.tagName !== 'LI') {
-    selectedCountry = selectedCountry.closest('li');
-  }
-  let selectedCountryData = dataArrayOfCountries.find(
-    country => country.name === selectedCountry.id
-  );
-  generateCountryCard(selectedCountryData);
-}
+// function selectCountry(event) {
+//   console.log(event.target);
+//   let selectedCountry = event.target;
+//   if (selectedCountry.tagName !== 'LI') {
+//     selectedCountry = selectedCountry.closest('li');
+//   }
+//   // fetchCountryById();
+//   // let selectedCountryData = dataArrayOfCountries.find(
+//   //   country => country.name === selectedCountry.id
+//   // );
+//   generateCountryCard(selectedCountry.id);
+// }
 
 function generateCountryCard(country) {
   contryList.innerHTML = '';
