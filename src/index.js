@@ -1,6 +1,6 @@
 import './css/styles.css';
 import Notiflix from 'notiflix';
-import { fetchCountries } from './js/fetchCountry.js';
+import { fetchCountries } from './js/fetchCountries.js';
 
 var debounce = require('lodash.debounce');
 
@@ -12,13 +12,12 @@ const countryInfo = document.querySelector('.country-info');
 
 let fetchCountryDebounced = debounce(createListOfCountries, DEBOUNCE_DELAY);
 
-// contryList.addEventListener('click', selectCountry);
-
 inputCountryName.addEventListener('input', fetchCountryDebounced);
 
-// let dataArrayOfCountries = [];
-
 function createListOfCountries(event) {
+  if (event.target.value === '') {
+    return;
+  }
   fetchCountries(event.target.value)
     .then(countries => {
       if (countries.length > 10) {
@@ -26,23 +25,11 @@ function createListOfCountries(event) {
           'Too many matches found. Please enter a more specific name.'
         );
       } else if (countries.length === 1) {
-        contryList.innerHTML = '';
-        countryInfo.innerHTML = '';
-        const markUpCard = `<div class="list-item-header">
-        <img src="${countries[0].flag}" width=30px height=25px>
-        <h2 class="country-name">${countries[0].name}</h2></div>
-        <h3>Capital: ${countries[0].capital}</h3>
-        <h3>Population: ${countries[0].population}</h3>
-        <h3>Languages: ${countries[0].languages
-          .map(language => language.name)
-          .join(',')}</h3>`;
-        countryInfo.insertAdjacentHTML('beforeend', markUpCard);
+        generateCountryCard(countries[0]);
       } else if (countries.length > 1) {
-        // dataArrayOfCountries = [];
         countryInfo.innerHTML = '';
         const markUpOfList = countries
           .map(country => {
-            // dataArrayOfCountries.push(country);
             return generateListItem(country.name, country.flag);
           })
           .join('');
@@ -53,7 +40,6 @@ function createListOfCountries(event) {
     .catch(error => {
       Notiflix.Notify.failure(error.message);
       contryList.innerHTML = '';
-      dataArrayOfCountries = [];
       countryInfo.innerHTML = '';
     });
 }
@@ -67,27 +53,17 @@ function generateListItem(name, flagUrl) {
         <h3 class="country-name">${name}</h3>
       </li>`;
 }
-// function fetchCountryById(countryId) {
-//   return fetch('https://restcountries.com/v2/name/' + countryId).then(
-//     response => {
-//       return response.json();
-//     }
-//   );
-// }
 
-// function selectCountry(event) {
-//   console.log(event.target);
-//   let selectedCountry = event.target;
-//   if (selectedCountry.tagName !== 'LI') {
-//     selectedCountry = selectedCountry.closest('li');
-//   }
-//   // fetchCountryById();
-//   // let selectedCountryData = dataArrayOfCountries.find(
-//   //   country => country.name === selectedCountry.id
-//   // );
-//   generateCountryCard(selectedCountry.id);
-// }
-
-// function generateCountryCard(country) {
-
-// }
+function generateCountryCard(country) {
+  contryList.innerHTML = '';
+  countryInfo.innerHTML = '';
+  const markUpCard = `<div class="list-item-header">
+        <img src="${countries[0].flag}" width=30px height=25px>
+        <h2 class="country-name">${countries[0].name}</h2></div>
+        <h3>Capital: ${countries[0].capital}</h3>
+        <h3>Population: ${countries[0].population}</h3>
+        <h3>Languages: ${countries[0].languages
+          .map(language => language.name)
+          .join(',')}</h3>`;
+  countryInfo.insertAdjacentHTML('beforeend', markUpCard);
+}
