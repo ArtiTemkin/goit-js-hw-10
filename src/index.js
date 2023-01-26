@@ -10,15 +10,15 @@ const inputCountryName = document.querySelector('#search-box');
 const contryList = document.querySelector('.country-list');
 const countryInfo = document.querySelector('.country-info');
 
-let fetchCountryDebounced = debounce(a, DEBOUNCE_DELAY);
+let fetchCountryDebounced = debounce(createListOfCountries, DEBOUNCE_DELAY);
 
 // contryList.addEventListener('click', selectCountry);
 
 inputCountryName.addEventListener('input', fetchCountryDebounced);
 
-let dataArrayOfCountries = [];
+// let dataArrayOfCountries = [];
 
-function a(event) {
+function createListOfCountries(event) {
   fetchCountries(event.target.value)
     .then(countries => {
       if (countries.length > 10) {
@@ -26,14 +26,23 @@ function a(event) {
           'Too many matches found. Please enter a more specific name.'
         );
       } else if (countries.length === 1) {
-        generateCountryCard(countries[0]);
-        event.target.value = '';
+        contryList.innerHTML = '';
+        countryInfo.innerHTML = '';
+        const markUpCard = `<div class="list-item-header">
+        <img src="${countries[0].flag}" width=30px height=25px>
+        <h2 class="country-name">${countries[0].name}</h2></div>
+        <h3>Capital: ${countries[0].capital}</h3>
+        <h3>Population: ${countries[0].population}</h3>
+        <h3>Languages: ${countries[0].languages
+          .map(language => language.name)
+          .join(',')}</h3>`;
+        countryInfo.insertAdjacentHTML('beforeend', markUpCard);
       } else if (countries.length > 1) {
-        dataArrayOfCountries = [];
+        // dataArrayOfCountries = [];
         countryInfo.innerHTML = '';
         const markUpOfList = countries
           .map(country => {
-            dataArrayOfCountries.push(country);
+            // dataArrayOfCountries.push(country);
             return generateListItem(country.name, country.flag);
           })
           .join('');
@@ -79,16 +88,6 @@ function generateListItem(name, flagUrl) {
 //   generateCountryCard(selectedCountry.id);
 // }
 
-function generateCountryCard(country) {
-  contryList.innerHTML = '';
-  countryInfo.innerHTML = '';
-  const markUpCard = `<div class="list-item-header">
-        <img src="${country.flag}" width=30px height=25px>
-      <h2 class="country-name">${country.name}</h2></div>
-      <h3>Capital: ${country.capital}</h3>
-      <h3>Population: ${country.population}</h3>
-      <h3>Languages: ${country.languages
-        .map(language => language.name)
-        .join(',')}</h3>`;
-  countryInfo.insertAdjacentHTML('beforeend', markUpCard);
-}
+// function generateCountryCard(country) {
+
+// }
