@@ -24,17 +24,12 @@ function createListOfCountries(event) {
         Notiflix.Notify.info(
           'Too many matches found. Please enter a more specific name.'
         );
-      } else if (countries.length === 1) {
-        generateCountryCard(countries[0]);
-      } else if (countries.length > 1) {
+      } else if (countries.length < 10 && countries.length >= 2) {
         countryInfo.innerHTML = '';
-        const markUpOfList = countries
-          .map(country => {
-            return generateListItem(country.name, country.flag);
-          })
-          .join('');
+        contryList.innerHTML = generateListItem(countries);
+      } else {
         contryList.innerHTML = '';
-        contryList.insertAdjacentHTML('beforeend', markUpOfList);
+        countryInfo.innerHTM = generateCountryCard(countries);
       }
     })
     .catch(error => {
@@ -45,25 +40,23 @@ function createListOfCountries(event) {
 }
 
 function generateListItem(name, flagUrl) {
-  return `<li class="list-item-header" id=${name}>
+  return (markUpList = `<li class="list-item-header" id=${name}>
         <img
         src="${flagUrl}"
         width=20px
         height=15px>
         <h3 class="country-name">${name}</h3>
-      </li>`;
+      </li>`);
 }
 
-function generateCountryCard(country) {
+function generateCountryCard(countries) {
   contryList.innerHTML = '';
-  countryInfo.innerHTML = '';
-  const markUpCard = `<div class="list-item-header">
+  return (markUpCard = `<div class="list-item-header">
         <img src="${countries[0].flag}" width=30px height=25px>
         <h2 class="country-name">${countries[0].name}</h2></div>
         <h3>Capital: ${countries[0].capital}</h3>
         <h3>Population: ${countries[0].population}</h3>
         <h3>Languages: ${countries[0].languages
           .map(language => language.name)
-          .join(',')}</h3>`;
-  countryInfo.insertAdjacentHTML('beforeend', markUpCard);
+          .join(',')}</h3>`);
 }
