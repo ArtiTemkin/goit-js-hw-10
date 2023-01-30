@@ -60,7 +60,7 @@ function generateListItem(countries) {
 }
 
 function generateCountryCard(countries) {
-  contryList.innerHTML = '';
+  countryList.innerHTML = '';
   return `<div class="list-item-header">
         <img src="${countries[0].flag}" width=30px height=25px>
         <h2 class="country-name">${countries[0].name}</h2></div>
