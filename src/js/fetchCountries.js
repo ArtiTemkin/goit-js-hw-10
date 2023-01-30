@@ -4,6 +4,7 @@ export function fetchCountries(name) {
       name +
       '?fields=name,capital,population,flag,languages'
   ).then(response => {
+    console.log(response);
     if (response.status === 404) {
       throw new Error('Oops, there is no country with that name');
     } else {
